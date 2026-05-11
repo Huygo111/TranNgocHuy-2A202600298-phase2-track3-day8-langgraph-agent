@@ -1,23 +1,35 @@
-from langgraph_agent_lab.routing import route_after_approval, route_after_classify, route_after_evaluate, route_after_retry
+from langgraph_agent_lab.routing import (
+    route_after_approval,
+    route_after_classify,
+    route_after_evaluate,
+    route_after_retry,
+)
 from langgraph_agent_lab.state import Route
 
 
-def test_route_after_classify():
+def test_route_after_classify() -> None:
     assert route_after_classify({"route": Route.SIMPLE.value}) == "answer"
     assert route_after_classify({"route": Route.TOOL.value}) == "tool"
+    assert route_after_classify({"route": Route.MISSING_INFO.value}) == "clarify"
     assert route_after_classify({"route": Route.RISKY.value}) == "risky_action"
+    assert route_after_classify({"route": Route.ERROR.value}) == "retry"
+    assert route_after_classify({"route": "unknown"}) == "clarify"
 
 
-def test_route_after_approval():
+def test_route_after_approval() -> None:
     assert route_after_approval({"approval": {"approved": True}}) == "tool"
     assert route_after_approval({"approval": {"approved": False}}) == "clarify"
+    assert route_after_approval({}) == "clarify"
 
 
-def test_route_after_retry_bound():
+def test_route_after_retry_bound() -> None:
     assert route_after_retry({"attempt": 0, "max_attempts": 3}) == "tool"
+    assert route_after_retry({"attempt": 2, "max_attempts": 3}) == "tool"
     assert route_after_retry({"attempt": 3, "max_attempts": 3}) == "dead_letter"
+    assert route_after_retry({"attempt": 4, "max_attempts": 3}) == "dead_letter"
 
 
-def test_route_after_evaluate():
+def test_route_after_evaluate() -> None:
     assert route_after_evaluate({"evaluation_result": "success"}) == "answer"
     assert route_after_evaluate({"evaluation_result": "needs_retry"}) == "retry"
+    assert route_after_evaluate({"evaluation_result": None}) == "answer"

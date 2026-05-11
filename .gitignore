@@ -29,6 +29,11 @@ reports/lab_report.md
 checkpoints.db
 checkpoints.db-wal
 checkpoints.db-shm
+checkpoints.db-journal
+outputs/*.db
+outputs/*.db-wal
+outputs/*.db-shm
+outputs/*.db-journal
 
 # Testing
 .pytest_cache/
