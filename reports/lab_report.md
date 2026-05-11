@@ -66,6 +66,12 @@ Summary:
 
 The retry count is 3 because `S05_error` retries twice before success, while `S07_dead_letter` has `max_attempts=1` and goes to dead letter after one retry. The interrupt count is 2 because both risky sample scenarios require approval.
 
+Additional self-check on `data/sample/scenarios_hidden.jsonl`:
+
+- Hidden-style scenarios passed: 15/15
+- Success rate: 100.00%
+- The mixed-priority case `Check refund status for order 456` routed to `risky`, confirming risky keywords take precedence over tool keywords.
+
 ## 5. Failure analysis
 
 1. Retry or tool failure: error-route scenarios simulate transient tool failures by returning tool results containing `ERROR`. `evaluate_node` marks these as `needs_retry`, and routing sends them through `retry_or_fallback_node`. The loop is bounded by `max_attempts`, so it cannot run forever.
