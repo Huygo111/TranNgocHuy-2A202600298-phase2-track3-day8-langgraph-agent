@@ -3,7 +3,7 @@
 ## 1. Team / student
 
 - Name: Tran Ngoc Huy
-- Repo/commit: local working tree
+- Repo/commit: https://github.com/Huygo111/TranNgocHuy-2A202600298-phase2-track3-day8-langgraph-agent.git / 1945b3e
 - Date: 2026-05-11
 
 ## 2. Architecture
